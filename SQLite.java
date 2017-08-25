@@ -59,7 +59,34 @@ public class SQLite {
             System.out.println("Query: " + query);
         }
         return result;
-    }    
+    }  
+
+    //Create Record Method
+    public static boolean create(String table, String columns, String stmts, String[] values){
+        boolean result = false;
+        String query = null;
+        try{
+            //query = "INSERT INTO " + table +" ("+ columns +") VALUES("+ stmts +")"; 
+            query = "INSERT INTO "+ table +" ("+columns+") VALUES("+stmts+")";
+            ResultSet rs = null;
+            java.sql.PreparedStatement pstmt = null;            
+            
+            pstmt = conn.prepareStatement(query);
+            for(int i=1,j=0;i<=values.length;i++,j++){
+                pstmt.setString(i, values[j]);
+            }
+            //pstmt.setString(1, values[0]);
+            //pstmt.setString(2, "Aug 4, 2017");
+            pstmt.executeUpdate();
+            
+            result = true;
+        }
+        catch(Exception e){
+            System.out.println("Create Error: " + e.getMessage());
+            System.out.println("Query: " + query);
+        }
+        return result;
+    }      
 
     //Update Record Method
     public static boolean update(String table, String set, int id){
